@@ -8,7 +8,7 @@ class GestureEditor:
         self.default_gestures = (
             [1, 1, 0, 0, 0],  # Tuple of default gestures,
             [0, 0, 0, 0, 0],  # that we recommend to use.
-            [1, 1, 0, 0, 0],  #
+            [0, 1, 1, 0, 0],  #
             [1, 1, 0, 0, 1],  # Each element in lists represents state of respective finger
             [1, 1, 1, 1, 1]  # (0 as closed, 1 as open)
         )
@@ -391,6 +391,7 @@ class GestureEditor:
 
             # Changing the current state of fingers
             self.custom_gestures[button_choice] = self.default_gestures[button_choice].copy()
+            print(self.default_gestures)
 
     def start(self, custom_gestures):
         """
