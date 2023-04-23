@@ -391,7 +391,6 @@ class GestureEditor:
 
             # Changing the current state of fingers
             self.custom_gestures[button_choice] = self.default_gestures[button_choice].copy()
-            print(self.default_gestures)
 
     def start(self, custom_gestures):
         """
