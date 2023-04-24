@@ -10,7 +10,7 @@ class GestureEditor:
             [0, 0, 0, 0, 0],  # that we recommend to use.
             [0, 1, 1, 0, 0],  #
             [1, 1, 0, 0, 1],  # Each element in lists represents state of respective finger
-            [1, 1, 1, 1, 1]  # (0 as closed, 1 as open)
+            [1, 1, 1, 1, 1]   # (0 as closed, 1 as open)
         )
 
         self.custom_gestures = [
@@ -21,7 +21,7 @@ class GestureEditor:
             [1, 1, 1, 1, 1]  # (0 as closed, 1 as open)
         ]
 
-        # Initializing a list of current fingers' states.
+        # Initializing a list of current states of fingers.
         self.fingers = [0 for _ in range(5)]
 
         # Loading images
@@ -226,7 +226,7 @@ class GestureEditor:
         )
         self.default_reset_button.place(x=0, y=0)
 
-        # Binding open/close methods to each finger's canvas and passing respective finger's id as well as current button choice
+        # Binding open/close methods to each finger's canvas and passing respective finger's id as well as the current button choice
         self.thumb_canvas.bind('<ButtonPress-1>', lambda x: self.open_close_finger(0, self.button_choice))
         self.finger1_canvas.bind('<ButtonPress-1>', lambda x: self.open_close_finger(1, self.button_choice))
         self.finger2_canvas.bind('<ButtonPress-1>', lambda x: self.open_close_finger(2, self.button_choice))
@@ -236,17 +236,15 @@ class GestureEditor:
     """
       Frontend opening and closing fingers methods.
 
-      The bottom line is to сover the old picture on
-      the respective canvas with a background colored
-      rectangle, and draw a new one in its place.
+      The bottom line is to clear all the objects 
+      related to the closed/open finger and draw
+      a new picture.
     """
 
     def open_thumb(self):
-        # Filling the thumb canvas with background colored rectangle, essentially making it empty for user
-        self.thumb_canvas.create_rectangle(0, 0, 80, 128, fill="#f0f0f0", outline="#f0f0f0")
-
-        # Filling the grey dot place with black in order to make it visually vanish
-        self.hand_canvas.create_rectangle(0, 113, 25, 138, fill="black")
+        # Clearing all objects in the canvas to draw a new picture
+        self.thumb_canvas.delete('all')
+        self.hand_canvas.delete('thumb_dot')
 
         # Creating the thumb image in a way that it seems open
         self.thumb_canvas.create_image(41, 63, image=self.thumb_image)
@@ -255,8 +253,8 @@ class GestureEditor:
         self.thumb_canvas.create_oval(22, 20, 47, 45, fill="#d9d9d9")
 
     def open_finger(self, id):
-        # Filling the finger's canvas with background colored rectangle, essentially making it empty for user
-        self.canvas_list[id].create_rectangle(0, 0, 55, 250, fill="#f0f0f0", outline="#f0f0f0")
+        # Clearing all objects in the canvas to draw a new picture
+        self.canvas_list[id].delete('all')
 
         # Creating the finger's image in a way that it seems open
         self.canvas_list[id].create_image(27, 127, image=self.finger_image)
@@ -265,8 +263,8 @@ class GestureEditor:
         self.canvas_list[id].create_oval(15, 17, 40, 42, fill="#d9d9d9")
 
     def open_pinky(self):
-        # Filling the pinky's canvas with background colored rectangle, essentially making it empty for user
-        self.pinky_canvas.create_rectangle(0, 0, 55, 143, fill="#f0f0f0", outline="#f0f0f0")
+        # Clearing all objects in the canvas to draw a new picture
+        self.pinky_canvas.delete('all')
 
         # Creating the pinky's image in a way that it seems open
         self.pinky_canvas.create_image(27, 125, image=self.finger_image)
@@ -274,9 +272,10 @@ class GestureEditor:
         # Creating a grey dot that represents a nail, for a better navigation
         self.pinky_canvas.create_oval(15, 17, 40, 42, fill="#d9d9d9")
 
-    # This method is responsible for drawing an open hand,
-    # Called once the app was opened
     def draw_open_hand(self):
+        """
+          This method is responsible for drawing an open hand
+        """
         for id in range(1, 4): self.open_finger(id)
         self.open_thumb()
         self.open_pinky()
@@ -284,18 +283,18 @@ class GestureEditor:
         self.fingers = [1 for _ in range(5)]
 
     def close_thumb(self):
-        # Filling the thumb canvas with background colored rectangle, essentially making it empty for user
-        self.thumb_canvas.create_rectangle(1, 0, 79, 128, fill="#f0f0f0", outline="#f0f0f0")
+        # Clearing all objects in the canvas to draw a new picture
+        self.thumb_canvas.delete('all')
 
         # Creating the thumb image in a way that it seems close
         self.thumb_canvas.create_image(65, 87, image=self.thumb_image)
 
         # Creating a grey dot that represents a nail, for a better navigation
-        self.hand_canvas.create_oval(0, 113, 25, 138, fill="#f0f0f0")
+        self.hand_canvas.create_oval(0, 113, 25, 138, fill="#f0f0f0", tags='thumb_dot')
 
     def close_finger1(self):
-        # Filling the finger's canvas with background colored rectangle, essentially making it empty for user
-        self.finger1_canvas.create_rectangle(0, 0, 55, 250, fill="#f0f0f0", outline="#f0f0f0")
+        # Clearing all objects in the canvas to draw a new picture
+        self.finger1_canvas.delete('all')
 
         # Creating the finger's image in a way that it seems close
         self.finger1_canvas.create_image(27, 205, image=self.finger_image)
@@ -304,8 +303,8 @@ class GestureEditor:
         self.finger1_canvas.create_oval(15, 154, 40, 179, fill="#d9d9d9")
 
     def close_finger2(self):
-        # Filling the finger's canvas with background colored rectangle, essentially making it empty for user
-        self.finger2_canvas.create_rectangle(0, 0, 55, 250, fill="#f0f0f0", outline="#f0f0f0")
+        # Clearing all objects in the canvas to draw a new picture
+        self.finger2_canvas.delete('all')
 
         # Creating the finger's image in a way that it seems close
         self.finger2_canvas.create_image(27, 275, image=self.finger_image)
@@ -314,8 +313,8 @@ class GestureEditor:
         self.finger2_canvas.create_oval(15, 223, 40, 248, fill="#d9d9d9")
 
     def close_finger3(self):
-        # Filling the finger's canvas with background colored rectangle, essentially making it empty for user
-        self.finger3_canvas.create_rectangle(0, 0, 55, 250, fill="#f0f0f0", outline="#f0f0f0")
+        # Clearing all objects in the canvas to draw a new picture
+        self.finger3_canvas.delete('all')
 
         # Creating the finger's image in a way that it seems close
         self.finger3_canvas.create_image(27, 235, image=self.finger_image)
@@ -324,8 +323,8 @@ class GestureEditor:
         self.finger3_canvas.create_oval(15, 183, 40, 208, fill="#d9d9d9")
 
     def close_pinky(self):
-        # Filling the pinky's canvas with background colored rectangle, essentially making it empty for user
-        self.pinky_canvas.create_rectangle(0, 0, 55, 189, fill="#f0f0f0", outline="#f0f0f0")
+        # Clearing all objects in the canvas to draw a new picture
+        self.pinky_canvas.delete('all')
 
         # Creating the pinky's image in a way that it seems close
         self.pinky_canvas.create_image(27, 169, image=self.finger_image)
@@ -333,7 +332,9 @@ class GestureEditor:
         # Creating a grey dot that represents a nail, for a better navigation
         self.pinky_canvas.create_oval(15, 116, 40, 141, fill="#d9d9d9")
 
-    # Back-end open/closing methods
+    """
+       Back-end open/closing methods
+    """
 
     def open_close_finger(self, id, button_choice):
         """
@@ -343,8 +344,13 @@ class GestureEditor:
         if button_choice is not None:
             """
             The list of methods was designed specifically to be able to call a desired method within one string
-            If (the finger's state + 1) % 2 == 0, the first element (list of closing methods) is called, and by id, 
+            If (the finger's state + 1) % 2 == 0, it will close it since 0 stays for a closed figner, and by id, 
             it chooses the specific method for the pressed finger.
+            
+            Example:
+            Current state of a finger is: 1 (open)
+            If it's pressed, the user wants to close it, hence: (1 + 1) % 2 = 0, =>
+            it closes the finger.
             """
             self.open_close_foos_list[(self.fingers[id] + 1) % 2][id]("леу)")
             # Updating the finger's state.
@@ -384,7 +390,7 @@ class GestureEditor:
           This method is called when the reset button is pressed,
           it takes one which represents the currently pressed button.
         """
-        # Preventing the accidental resetting when no gesture is chosen
+        # Preventing accidental resetting when no gesture is chosen
         if button_choice is not None:
             # Setting the default state of fingers on the display
             self.set_gesture(self.default_gestures[button_choice])
@@ -397,5 +403,8 @@ class GestureEditor:
           This method is called when the start button is pressed,
           it takes one argument which represents user-customized gestures
         """
-        media_controller = MC()  # Initializing the instance of MC module, which
-        media_controller.action(custom_gestures)  # Calling the action method, which takes care of further work
+        media_controller = MC()  # Initializing the instance of MC module
+        try:
+            media_controller.action(custom_gestures)  # Calling the action method, which takes care of further work
+        except AttributeError:
+            tk.messagebox.showerror(title='Error', message="Unable to detect a webcam, please make sure it's connected")
