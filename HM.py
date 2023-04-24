@@ -14,7 +14,7 @@ class HandsTracking():
         self.detection_con = detection_con
         self.tracking_con = tracking_con
 
-        # Initializing needed mediapipe's fields
+        # Initializing needed mediapipe's fields and methods
         self.mp_hands = mp.solutions.hands
         self.hands = self.mp_hands.Hands(self.mode, self.max_hands, self.complexity, self.detection_con, self.tracking_con)
         self.draw_mark = mp.solutions.drawing_utils
@@ -46,7 +46,7 @@ class HandsTracking():
         # Converting color to RGB
         self.imgGBR = cv2.cvtColor(imgRGB, cv2.COLOR_RGB2BGR)
 
-        # Results of hands recognition
+        # Process hands recognition on a frame
         self.results = self.hands.process(imgRGB)
 
         # If there are hand landmarks, it draws them and their connections
@@ -77,7 +77,10 @@ class HandsTracking():
                     self.lm_lst.append([id, ox, oy])
 
             """ 
-            Setting the state of fingers by comparing lms coordinates.
+            Setting the state of fingers by comparing lms coordinates. 
+            If the Y coordinate of a fingertip < the Y coordinate of a landmark below, 
+            a finger is closed, otherwise goes vice versa.
+
             The first index is the id of a landmark, the second index is X or Y coordinate (1 as X, 2 as Y)
             See https://developers.google.com/mediapipe/solutions/vision/hand_landmarker#models for more understanding
             """
