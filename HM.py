@@ -7,14 +7,14 @@ class HandsTracking():
     def __init__(self, mode=False, max_hands=1, complexity=1, detection_con=0.8, tracking_con=0.8):
         # Initializing needed parameters for hands recognition
 
-        self.last_gesture = None
+        self.last_gesture = 'No hand'
         self.mode = mode
         self.max_hands = max_hands
         self.complexity = complexity
         self.detection_con = detection_con
         self.tracking_con = tracking_con
 
-        # Initializing needed mediapipe's fields and methods
+        # Initializing needed mediapipe's fields
         self.mp_hands = mp.solutions.hands
         self.hands = self.mp_hands.Hands(self.mode, self.max_hands, self.complexity, self.detection_con, self.tracking_con)
         self.draw_mark = mp.solutions.drawing_utils
@@ -46,7 +46,7 @@ class HandsTracking():
         # Converting color to RGB
         self.imgGBR = cv2.cvtColor(imgRGB, cv2.COLOR_RGB2BGR)
 
-        # Process hands recognition on a frame
+        # Results of hands recognition
         self.results = self.hands.process(imgRGB)
 
         # If there are hand landmarks, it draws them and their connections
@@ -77,10 +77,7 @@ class HandsTracking():
                     self.lm_lst.append([id, ox, oy])
 
             """ 
-            Setting the state of fingers by comparing lms coordinates. 
-            If the Y coordinate of a fingertip < the Y coordinate of a landmark below, 
-            a finger is closed, otherwise goes vice versa.
-
+            Setting the state of fingers by comparing lms coordinates.
             The first index is the id of a landmark, the second index is X or Y coordinate (1 as X, 2 as Y)
             See https://developers.google.com/mediapipe/solutions/vision/hand_landmarker#models for more understanding
             """
@@ -140,7 +137,7 @@ class HandsTracking():
         # Converting the vector length to the needed scale to fill the bar
         self.bar_length = int(np.interp(self.volume, [0, 100], [480, 225]))
         # If volume != 0 and there was already one gesture recognized, it fills the bar
-        if self.volume != 0 and self.last_gesture != '':
+        if self.volume != 0 and self.last_gesture != 'No hand':
             cv2.rectangle(img, (590, self.bar_length + 3), (img.shape[1] - 5, img.shape[0] - 5), (255, 10, 255), thickness = cv2.FILLED)
         # Putting volume percentage
         if self.volume == 100:
