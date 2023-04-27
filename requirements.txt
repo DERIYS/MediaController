@@ -1,0 +1,7 @@
+opencv-python~=4.7.0.72
+mediapipe~=0.9.3.0
+numpy~=1.24.2
+pywin32~=306
+comtypes~=1.1.14
+pycaw~=20230407
+customtkinter~=5.1.2
