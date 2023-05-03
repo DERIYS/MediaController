@@ -1,3 +1,5 @@
+# Slava Ukraini!
+
 from gui import GestureEditor as GE
 from tkinter import Tk
 
